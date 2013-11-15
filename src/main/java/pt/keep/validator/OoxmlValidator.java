@@ -2,6 +2,8 @@ package pt.keep.validator;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -11,7 +13,12 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.apache.poi.extractor.ExtractorFactory;
+import org.apache.poi.hslf.HSLFSlideShow;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -43,28 +50,89 @@ public class OoxmlValidator
 	
 	public Result process(File f) {
 		Result res = null;
-		boolean isValidDocx=false,isValidPptx=false,isValidXlsx=false;
+		boolean isValidDocx=false,isValidPptx=false,isValidXlsx=false,isValidDoc=false,isValidPpt=false,isValidXls=false;
 		
 		XWPFDocument docx = null;
 		XSSFWorkbook xlsx = null;
 		XMLSlideShow pptx = null; 
+		HWPFDocument doc = null;
+		HSSFWorkbook xls = null;
+		HSLFSlideShow ppt = null;
 		
+		List<String> errors = new ArrayList<String>();
 		try {
 			docx = new XWPFDocument(new FileInputStream(f));
 			isValidDocx=true;
 		}catch (Exception e) {
+			String error = e.getMessage();
+			if(error==null){
+				error = "null";
+			}
+			if(!errors.contains(error)){
+				errors.add(error);
+			}
 		}
 		
 		try {
 			xlsx = new XSSFWorkbook(new FileInputStream(f));
 			isValidXlsx=true;
 		}catch (Exception e) {
+			String error = e.getMessage();
+			if(error==null){
+				error = "null";
+			}
+			if(!errors.contains(error)){
+				errors.add(error);
+			}
 		}
 		
 		try {
 			pptx = new XMLSlideShow(new FileInputStream(f));
 			isValidPptx=true;
 		}catch (Exception e) {
+			String error = e.getMessage();
+			if(error==null){
+				error = "null";
+			}
+			if(!errors.contains(error)){
+				errors.add(error);
+			}
+		}
+		try{
+			doc = new HWPFDocument(new FileInputStream(f));
+			isValidDoc=true;
+		}catch(Exception e){
+			String error = e.getMessage();
+			if(error==null){
+				error = "null";
+			}
+			if(!errors.contains(error)){
+				errors.add(error);
+			}
+		}
+		try{
+			xls = new HSSFWorkbook(new FileInputStream(f));
+			isValidXls=true;
+		}catch(Exception e){
+			String error = e.getMessage();
+			if(error==null){
+				error = "null";
+			}
+			if(!errors.contains(error)){
+				errors.add(error);
+			}
+		}
+		try{
+			ppt = new HSLFSlideShow(new FileInputStream(f));
+			isValidPpt=true;
+		}catch(Exception e){
+			String error = e.getMessage();
+			if(error==null){
+				error = "null";
+			}
+			if(!errors.contains(error)){
+				errors.add(error);
+			}
 		}
 		
 		if(isValidDocx){
@@ -73,50 +141,31 @@ public class OoxmlValidator
 			res = extractInfoFromValidPptx(pptx);
 		}else if(isValidXlsx){
 			res = extractInfoFromValidXlsx(xlsx);
+		}else if(isValidDoc){
+			res = extractInfoFromValidDoc(doc);
+		}else if(isValidXls){
+			res = extractInfoFromValidXls(xls);
+		}else if(isValidPpt){
+			res = extractInfoFromValidPpt(ppt);
 		}else{
-			res = notValidFile(f);
+			res = notValidFile(errors);
 		}
 		return res;
 	}
 	
-	private Result notValidFile(File f) {
+	private Result notValidFile(List<String> errors) {
 		Result res = new Result();
 		res.setValid(false);
-		try {
-			XWPFDocument docx = new XWPFDocument(new FileInputStream(f));
-		}catch (Exception e) {
-			WordInfo word = new WordInfo();
-			word.setWordError(e.getMessage());
-			res.setWord(word);
-		}
-		
-		try {
-			XSSFWorkbook xlsx = new XSSFWorkbook(new FileInputStream(f));
-		}catch (Exception e) {
-			ExcelInfo excel = new ExcelInfo();
-			excel.setExcelError(e.getMessage());
-			res.setExcel(excel);
-		}
-		
-		try {
-			XMLSlideShow pptx = new XMLSlideShow(new FileInputStream(f));
-		}catch (Exception e) {
-			PowerpointInfo powerpoint = new PowerpointInfo();
-			powerpoint.setPowerpointError(e.getMessage());
-			res.setPowerpoint(powerpoint);
-		}
-		
-		
-		
+		res.setValidationErrors(errors);
 		return res;
 	}
 
 	private Result extractInfoFromValidXlsx(XSSFWorkbook xlsx) {
 		Result res = new Result();
 		res.setValid(true);
-		res.setValidationError(null);
 		ExcelInfo excel = new ExcelInfo();
 		excel.setNumberOfSheets(xlsx.getNumberOfSheets());
+		excel.addProperties(xlsx.getProperties());
 		res.setExcel(excel);
 		return res;
 	}
@@ -124,17 +173,48 @@ public class OoxmlValidator
 	private Result extractInfoFromValidPptx(XMLSlideShow pptx) {
 		Result res = new Result();
 		res.setValid(true);
-		res.setValidationError(null);
 		PowerpointInfo powerpoint = new PowerpointInfo();
 		powerpoint.setNumberOfSlides(pptx.getSlides().length);
+		powerpoint.addProperties(pptx.getProperties());
+		res.setPowerpoint(powerpoint);
 		return res;
 	}
 
 	private Result extractInfoFromValidDocx(XWPFDocument docx) {
 		Result res = new Result();
 		res.setValid(true);
-		res.setValidationError(null);
 		WordInfo word = new WordInfo();
+		word.addProperties(docx.getProperties());
+		res.setWord(word);
+		return res;
+	}
+	
+	private Result extractInfoFromValidXls(HSSFWorkbook xls) {
+		Result res = new Result();
+		res.setValid(true);
+		ExcelInfo excel = new ExcelInfo();
+		excel.setNumberOfSheets(xls.getNumberOfSheets());
+		excel.addDocumentSummaryInformation(xls.getDocumentSummaryInformation());
+		excel.addSummaryInformation(xls.getSummaryInformation());
+		res.setExcel(excel);
+		return res;
+	}
+
+	private Result extractInfoFromValidPpt(HSLFSlideShow ppt) {
+		Result res = new Result();
+		res.setValid(true);
+		PowerpointInfo powerpoint = new PowerpointInfo();
+		powerpoint.setNumberOfSlides(ppt.getDocumentSummaryInformation().getSlideCount());
+		powerpoint.addDocumentSummaryInformation(ppt.getDocumentSummaryInformation());
+		res.setPowerpoint(powerpoint);
+		return res;
+	}
+
+	private Result extractInfoFromValidDoc(HWPFDocument doc) {
+		Result res = new Result();
+		res.setValid(true);
+		WordInfo word = new WordInfo();
+		word.addDocumentSummaryInformation(doc.getDocumentSummaryInformation());
 		res.setWord(word);
 		return res;
 	}
@@ -151,6 +231,7 @@ public class OoxmlValidator
 	
     public static void main( String[] args )
     {
+    	Logger.getRootLogger().setLevel(Level.OFF);
     	try {
 			OoxmlValidator ov = new OoxmlValidator();
 			Options options = new Options();

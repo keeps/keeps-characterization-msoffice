@@ -1,5 +1,8 @@
 package pt.keep.validator.result;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -7,15 +10,26 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlRootElement(name = "ooxmlValidationResult")
-@XmlType(propOrder = { "valid","validationError","word","excel","powerpoint"})
+@XmlType(propOrder = { "valid","validationErrors","word","excel","powerpoint"})
 public class Result {
 	private boolean valid;
-	private String validationError;
-	
+	private List<String> validationErrors;
 	private ExcelInfo excel;
 	private WordInfo word;
 	private PowerpointInfo powerpoint;
+
 	
+	public void addError(String error){
+		if(validationErrors==null){
+			validationErrors=new ArrayList<String>();
+		}
+		if(error==null){
+			error = "Null pointer exception";
+		}
+		if(!validationErrors.contains(error)){
+			validationErrors.add(error);
+		}
+	}
 	
 	@XmlElement(required=true)
 	public boolean isValid() {
@@ -26,13 +40,12 @@ public class Result {
 	}
 	
 	@XmlElement(required=false)
-	public String getValidationError() {
-		return validationError;
+	public List<String> getValidationErrors() {
+		return validationErrors;
 	}
-	public void setValidationError(String validationError) {
-		this.validationError = validationError;
+	public void setValidationErrors(List<String> validationErrors) {
+		this.validationErrors = validationErrors;
 	}
-	
 	@XmlElement
 	public ExcelInfo getExcel() {
 		return excel;

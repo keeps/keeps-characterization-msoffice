@@ -1,16 +1,19 @@
 package pt.keep.validator.result;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlRootElement(name = "excel")
-@XmlType(propOrder = { "excelError","numberOfSheets"})
-public class ExcelInfo {
-	private int numberOfSheets;
-	private String excelError;
+import org.apache.poi.POIXMLProperties;
+import org.apache.poi.hpsf.DocumentSummaryInformation;
+import org.apache.poi.hpsf.SummaryInformation;
 
-	@XmlElement
+@XmlRootElement(name = "excel")
+public class ExcelInfo extends OfficeInfo{
+	private int numberOfSheets;
+
 	public int getNumberOfSheets() {
 		return numberOfSheets;
 	}
@@ -19,18 +22,8 @@ public class ExcelInfo {
 		this.numberOfSheets = numberOfSheets;
 	}
 
-	@XmlElement
-	public String getExcelError() {
-		return excelError;
-	}
+	
 
-	public void setExcelError(String excelError) {
-		this.excelError = excelError;
-	}
-	
-	
-	
-	
 	
 	
 	
