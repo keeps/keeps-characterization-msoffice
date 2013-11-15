@@ -221,7 +221,7 @@ public class OoxmlValidator
 
 	private void printHelp(Options opts) {
 		HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp("report", opts);
+		formatter.printHelp("java -jar [jarFile]", opts);
 	}
 	
 	private void printVersion() {
