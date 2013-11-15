@@ -14,6 +14,7 @@ import org.apache.poi.hpsf.SummaryInformation;
 public class ExcelInfo extends OfficeInfo{
 	private int numberOfSheets;
 
+	@XmlElement
 	public int getNumberOfSheets() {
 		return numberOfSheets;
 	}

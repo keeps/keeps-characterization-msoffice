@@ -7,7 +7,20 @@
   <version>1.0-SNAPSHOT</version>
   <name>msoffice-characterization-tool</name>
   <url>http://maven.apache.org</url>
-  
+  <repositories>
+		<repository>
+			<id>KEEPS-Artifacts</id>
+			<name>KEEP Artifacts-releases</name>
+			<url>http://artifactory.keep.pt/keep</url>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>KEEP Artifacts</id>
+			<name>KEEP Artifacts</name>
+			<url>http://artifactory.keep.pt/keep</url>
+		</repository>
+	</distributionManagement>
    <build>
 		<plugins>
 			<plugin>
@@ -24,7 +37,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>pt.keep.validator.OoxmlValidator</mainClass>
+							<mainClass>pt.keep.validator.MsofficeCharacterizationTool</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -51,6 +64,11 @@
 	
 	
   <dependencies>
+  <dependency>
+    <groupId>com.pff</groupId>
+    <artifactId>java-libpst</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
   <dependency>
     	<groupId>org.apache.poi</groupId>
     	<artifactId>poi-scratchpad</artifactId>

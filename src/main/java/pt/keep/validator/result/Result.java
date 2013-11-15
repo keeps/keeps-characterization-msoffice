@@ -10,15 +10,34 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlRootElement(name = "msofficeCharacterizationResult")
-@XmlType(propOrder = { "valid","validationErrors","word","excel","powerpoint"})
+@XmlType(propOrder = { "valid","validationErrors","word","excel","powerpoint","pst","msg"})
 public class Result {
 	private boolean valid;
 	private List<String> validationErrors;
 	private ExcelInfo excel;
 	private WordInfo word;
 	private PowerpointInfo powerpoint;
-
+	private PstInfo pst;
+	private MsgInfo msg;
 	
+	@XmlElement
+	public MsgInfo getMsg() {
+		return msg;
+	}
+
+	public void setMsg(MsgInfo msg) {
+		this.msg = msg;
+	}
+
+	@XmlElement
+	public PstInfo getPst() {
+		return pst;
+	}
+
+	public void setPst(PstInfo pst) {
+		this.pst = pst;
+	}
+
 	public void addError(String error){
 		if(validationErrors==null){
 			validationErrors=new ArrayList<String>();
