@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 
-@XmlRootElement(name = "ooxmlValidationResult")
+@XmlRootElement(name = "msofficeCharacterizationResult")
 @XmlType(propOrder = { "valid","validationErrors","word","excel","powerpoint"})
 public class Result {
 	private boolean valid;

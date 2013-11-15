@@ -21,15 +21,12 @@ usage: java -jar [jarFile]
 ## Tool Output Example
 ```bash
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ooxmlValidationResult>
+<msofficeCharacterizationResult>
     <valid>true</valid>
-    <word>
+    <excel>
         <creator>Sebastien Leroux</creator>
-        <description>Test comments</description>
-        <keywords>Test keywords</keywords>
-        <revision>1</revision>
-        <subject>Test subject</subject>
-        <title>Test title</title>
+        <created>2013-10-28T12:15:57Z</created>
+        <modified>2013-10-28T12:16:31Z</modified>
         <lineCount>0</lineCount>
         <parCount>0</parCount>
         <sectionCount>0</sectionCount>
@@ -37,8 +34,9 @@ usage: java -jar [jarFile]
         <osVersion>0</osVersion>
         <wordCount>0</wordCount>
         <pageCount>0</pageCount>
-    </word>
-</ooxmlValidationResult>
+        <numberOfSheets>1</numberOfSheets>
+    </excel>
+</msofficeCharacterizationResult>
 ```
 
 ## License
