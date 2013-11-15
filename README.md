@@ -41,7 +41,7 @@ usage: java -jar [jarFile]
 
 ## License
 
-This software is available under the [LGPL version 3 license](LICENSE). All corpora was created specifically for this project and is available under the [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/deed.en_US").
+This software is available under the [LGPL version 3 license](LICENSE).
 
 
 
