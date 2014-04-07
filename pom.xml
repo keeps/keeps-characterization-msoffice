@@ -37,7 +37,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>pt.keep.validator.MsofficeCharacterizationTool</mainClass>
+							<mainClass>pt.keep.validator.msoffice.MsofficeCharacterizationTool</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

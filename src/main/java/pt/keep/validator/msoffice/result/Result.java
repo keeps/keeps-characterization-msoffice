@@ -1,4 +1,4 @@
-package pt.keep.validator.result;
+package pt.keep.validator.msoffice.result;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,7 @@
-package pt.keep.validator.result;
+package pt.keep.validator.msoffice.result;
 
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.poi.POIXMLProperties;

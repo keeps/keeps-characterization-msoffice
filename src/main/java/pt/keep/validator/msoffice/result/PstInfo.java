@@ -1,7 +1,4 @@
-package pt.keep.validator.result;
-
-import java.util.List;
-import java.util.Set;
+package pt.keep.validator.msoffice.result;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
